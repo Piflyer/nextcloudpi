@@ -117,7 +117,7 @@ cd nextcloudpi
 NextCloudPi can be installed in any architecture running the latest Debian
 
 ```
-# curl -sSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh | bash
+# curl -sSL https://raw.githubusercontent.com/Piflyer/nextcloudpi/master/install.sh | bash
 ```
 
 ## Downloads
