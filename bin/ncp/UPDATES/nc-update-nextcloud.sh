@@ -15,7 +15,7 @@ configure()
 {
   [[ "$VERSION" == "0" ]] && VERSION="$LATEST"
   bash /usr/local/bin/ncp-update-nc "$VERSION" && \
-  sudo -u www-data php /var/www/nextcloud/occ -n db:convert-filecache-bigint
+  sudo -u www-data php /var/www/html/nextcloud/occ -n db:convert-filecache-bigint
 }
 
 install() { :; }
