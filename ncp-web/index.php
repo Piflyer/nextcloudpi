@@ -246,7 +246,7 @@ HTML;
           <div id="nc-config-box" class="table-wrapper">
 <?php
   // print Nextcloud config table
-  include( '/var/www/nextcloud/config/config.php' );
+  include( '/var/www/html/nextcloud/config/config.php' );
 
   echo '<table class="dashtable">';
   foreach ( $CONFIG as $key => $val )

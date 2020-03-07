@@ -22,7 +22,7 @@ configure()
   }
 
   # Run cron.php once now to get all checks right in CI.
-  sudo -u www-data php /var/www/nextcloud/cron.php
+  sudo -u www-data php /var/www/html/nextcloud/cron.php
 
   # activate NCP
   a2ensite  ncp nextcloud

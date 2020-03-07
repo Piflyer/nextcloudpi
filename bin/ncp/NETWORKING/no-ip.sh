@@ -37,7 +37,7 @@ install()
 ### END INIT INFO
 EOF
 
-  cat debian.noip2.sh >> /etc/init.d/noip2 
+  cat debian.noip2.sh >> /etc/init.d/noip2
 
   chmod +x /etc/init.d/noip2
   cd -
@@ -85,7 +85,7 @@ configure()
 
   update-rc.d noip2 enable
   service noip2 restart
-  cd /var/www/nextcloud
+  cd /var/www/html/nextcloud
   sudo -u www-data php occ config:system:set trusted_domains 3 --value="$DOMAIN"
   sudo -u www-data php occ config:system:set overwrite.cli.url --value=https://"$DOMAIN"/
   echo "noip DDNS enabled"
@@ -113,4 +113,3 @@ cleanup()
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

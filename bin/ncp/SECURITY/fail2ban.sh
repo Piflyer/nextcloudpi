@@ -79,8 +79,8 @@ configure()
     return
   }
 
-  local NCLOG="/var/www/nextcloud/data/nextcloud.log"
-  local NCLOG1="$( sudo -u www-data php /var/www/nextcloud/occ config:system:get logfile )"
+  local NCLOG="/var/www/html/nextcloud/data/nextcloud.log"
+  local NCLOG1="$( sudo -u www-data php /var/www/html/nextcloud/occ config:system:get logfile )"
 
   [[ "$NCLOG1" != "" ]] && NCLOG="$NCLOG1"
 
@@ -89,7 +89,7 @@ configure()
 
   sudo -u www-data touch "$NCLOG" || { echo -e "ERROR: user www-data does not have write permissions on $NCLOG"; return 1; }
 
-  cd /var/www/nextcloud
+  cd /var/www/html/nextcloud
   sudo -u www-data php occ config:system:set loglevel --value=2
   sudo -u www-data php occ config:system:set log_type --value=file
 
@@ -189,4 +189,3 @@ EOF
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

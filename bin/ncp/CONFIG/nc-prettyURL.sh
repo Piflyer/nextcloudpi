@@ -8,7 +8,7 @@
 
 
 
-NCDIR=/var/www/nextcloud
+NCDIR=/var/www/html/nextcloud
 OCC="$NCDIR/occ"
 
 install() { :; }
@@ -16,12 +16,12 @@ install() { :; }
 isactive()
 {
   local REWRITEBASE
-  REWRITEBASE="$( grep RewriteBase /var/www/nextcloud/.htaccess )" || return 1
+  REWRITEBASE="$( grep RewriteBase /var/www/html/nextcloud/.htaccess )" || return 1
   [[ $REWRITEBASE != 1 ]]
 }
 
-configure() 
-{  
+configure()
+{
   # make sure overwrite.cli.url end with a '/'
   local URL="$(ncc config:system:get overwrite.cli.url)"
   [[ "${URL: -1}" != "/" ]] && ncc config:system:set overwrite.cli.url --value="${URL}/"

@@ -17,7 +17,7 @@ echo "NextCloudPi version|$( cat /usr/local/etc/ncp-version )"
 echo "distribution|$( cat /etc/issue )"
 
 # Data
-DATADIR="$( grep datadirectory /var/www/nextcloud/config/config.php |
+DATADIR="$( grep datadirectory /var/www/html/nextcloud/config/config.php |
 	    awk '{ print $3 }' | grep -oP "[^']*[^']" | head -1 )"
 test -d "$DATADIR" || DIRINFO=" (doesn't exist)"
 USBDEVS="$( lsblk -S -o  NAME,TRAN | awk '{ if ( $2 == "usb" ) print $1; }' | tr '\n' ' ' )"
@@ -44,7 +44,7 @@ echo "dbdir|$DBDIR$DBDIRINFO"
 
 # Nextcloud
 [[ ${EUID} -eq 0 ]] && SUDO="sudo -u www-data"
-VERSION="$( $SUDO php /var/www/nextcloud/occ status | grep "version:" | awk '{ print $3 }' )"
+VERSION="$( $SUDO php /var/www/html/nextcloud/occ status | grep "version:" | awk '{ print $3 }' )"
 if [[ "$VERSION" != "" ]]; then
   echo "Nextcloud check|ok"
   echo "Nextcloud version|$VERSION"

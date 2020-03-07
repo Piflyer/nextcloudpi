@@ -69,7 +69,7 @@ EOF
 
   echo "Setting up Nextcloud..."
 
-  cd /var/www/nextcloud/
+  cd /var/www/html/nextcloud/
   rm -f config/config.php
   ncc maintenance:install --database \
     "mysql" --database-name "nextcloud"  --database-user "$DBADMIN" --database-pass \
@@ -94,7 +94,7 @@ EOF
 EOF
 
   # tmp upload dir
-  local UPLOADTMPDIR=/var/www/nextcloud/data/tmp
+  local UPLOADTMPDIR=/var/www/html/nextcloud/data/tmp
   mkdir -p "$UPLOADTMPDIR"
   chown www-data:www-data "$UPLOADTMPDIR"
   ncc config:system:set tempdirectory --value "$UPLOADTMPDIR"
@@ -140,8 +140,8 @@ replace into  oc_appconfig values ( 'theming', 'backgroundMime', "image/png"    
 EOF
 
   # NCP app
-  cp -r /var/www/ncp-app /var/www/nextcloud/apps/nextcloudpi
-  chown -R www-data:     /var/www/nextcloud/apps/nextcloudpi
+  cp -r /var/www/ncp-app /var/www/html/nextcloud/apps/nextcloudpi
+  chown -R www-data:     /var/www/html/nextcloud/apps/nextcloudpi
   ncc app:enable nextcloudpi
 
   # enable some apps by default
@@ -158,9 +158,9 @@ EOF
   ncc app:enable news
 
   # ncp-previewgenerator
-  cp -r /var/www/ncp-previewgenerator /var/www/nextcloud/apps/previewgenerator
+  cp -r /var/www/ncp-previewgenerator /var/www/html/nextcloud/apps/previewgenerator
   ncc app:enable previewgenerator
-  chown www-data:www-data /var/www/nextcloud/apps/previewgenerator
+  chown www-data:www-data /var/www/html/nextcloud/apps/previewgenerator
 
   # previews
   ncc config:app:set previewgenerator squareSizes --value="32 256"

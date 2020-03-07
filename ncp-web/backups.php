@@ -97,7 +97,7 @@ HTML;
 
 <?php
 
-include( '/var/www/nextcloud/config/config.php' );
+include( '/var/www/html/nextcloud/config/config.php' );
 
 $snap_dir = realpath($CONFIG['datadirectory'] . '/../ncp-snapshots');
 $snaps = array();

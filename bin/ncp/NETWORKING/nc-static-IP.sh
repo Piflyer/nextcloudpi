@@ -10,7 +10,7 @@
 
 
 
-configure() 
+configure()
 {
   local GW="$( ip r | grep "default via"   | awk '{ print $3 }' )"
   local DNS="$( grep nameserver /etc/resolv.conf | head -1 | awk '{ print $2 }' )"
@@ -85,9 +85,9 @@ iface $IFACE inet static
 EOF
     systemctl restart networking
   }
- 
-  sudo -u www-data php /var/www/nextcloud/occ config:system:set trusted_domains 1 --value="$IP"
-  sudo -u www-data php /var/www/nextcloud/occ config:system:set overwrite.cli.url --value=https://"$IP"/
+
+  sudo -u www-data php /var/www/html/nextcloud/occ config:system:set trusted_domains 1 --value="$IP"
+  sudo -u www-data php /var/www/html/nextcloud/occ config:system:set overwrite.cli.url --value=https://"$IP"/
   echo "Static IP set to $IP"
 }
 
@@ -109,4 +109,3 @@ install() { :; }
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

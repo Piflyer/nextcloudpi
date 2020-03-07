@@ -45,7 +45,7 @@ close_summary
 ##
 
 open_summary "Nextcloud configuration"
-sudo -u www-data php /var/www/nextcloud/occ config:list system
+sudo -u www-data php /var/www/html/nextcloud/occ config:list system
 close_summary
 
 ##
@@ -62,7 +62,7 @@ close_summary
 
 ##
 
-DATADIR="$( grep datadirectory /var/www/nextcloud/config/config.php |
+DATADIR="$( grep datadirectory /var/www/html/nextcloud/config/config.php |
             awk '{ print $3 }' | grep -oP "[^']*[^']" | head -1 )"
 
 open_summary "Nextcloud logs"

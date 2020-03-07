@@ -11,8 +11,8 @@
 is_active()
 {
   local SRCDIR
-  SRCDIR="$( grep datadirectory /var/www/nextcloud/config/config.php | awk '{ print $3 }' | grep -oP "[^']*[^']" | head -1 )" || return 1
-  [[ "$SRCDIR" != "/var/www/nextcloud/data" ]]
+  SRCDIR="$( grep datadirectory /var/www/html/nextcloud/config/config.php | awk '{ print $3 }' | grep -oP "[^']*[^']" | head -1 )" || return 1
+  [[ "$SRCDIR" != "/var/www/html/nextcloud/data" ]]
 }
 
 install()
@@ -27,7 +27,7 @@ configure()
 
   ## CHECKS
   local SRCDIR
-  SRCDIR=$( cd /var/www/nextcloud; sudo -u www-data php occ config:system:get datadirectory ) || {
+  SRCDIR=$( cd /var/www/html/nextcloud; sudo -u www-data php occ config:system:get datadirectory ) || {
     echo -e "Error reading data directory. Is NextCloud running and configured?";
     return 1;
   }
@@ -64,7 +64,7 @@ configure()
 
 
   ## COPY
-  cd /var/www/nextcloud
+  cd /var/www/html/nextcloud
   sudo -u www-data php occ maintenance:mode --on
 
   echo "moving data directory from $SRCDIR to $DATADIR..."
@@ -120,4 +120,3 @@ configure()
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

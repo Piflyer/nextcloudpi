@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# NextCloudPi additions to Raspbian 
+# NextCloudPi additions to Raspbian
 #
 # Copyleft 2017 by Ignacio Nunez Hernanz <nacho _a_t_ ownyourbits _d_o_t_ com>
 # GPL licensed (see end of file) * Use at your own risk!
@@ -34,7 +34,7 @@ install()
   # add the ncc shortcut
   cat > /usr/local/bin/ncc <<'EOF'
 #!/bin/bash
-sudo -u www-data php /var/www/nextcloud/occ "$@"
+sudo -u www-data php /var/www/html/nextcloud/occ "$@"
 EOF
   chmod +x /usr/local/bin/ncc
 
@@ -201,7 +201,7 @@ done
 ncc config:system:set trusted_domains 1 --value=$ip
 EOF
 
-  [[ "$DOCKERBUILD" != 1 ]] && systemctl enable nextcloud-domain 
+  [[ "$DOCKERBUILD" != 1 ]] && systemctl enable nextcloud-domain
 
   # NEXTCLOUDPI UPDATES
   cat > /etc/cron.daily/ncp-check-version <<EOF
@@ -234,7 +234,7 @@ EOF
   if [[ -f /.ncp-image ]]; then
     rm -rf /var/log/ncp.log
 
-    ## NEXTCLOUDPI MOTD 
+    ## NEXTCLOUDPI MOTD
     rm -rf /etc/update-motd.d
     mkdir /etc/update-motd.d
     rm /etc/motd

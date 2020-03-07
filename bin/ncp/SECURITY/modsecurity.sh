@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# modsecurity WAF installation on Raspbian 
+# modsecurity WAF installation on Raspbian
 #
 # Copyleft 2017 by Ignacio Nunez Hernanz <nacho _a_t_ ownyourbits _d_o_t_ com>
 # GPL licensed (see end of file) * Use at your own risk!
@@ -8,7 +8,7 @@
 # More at ownyourbits.com
 #
 
-NCDIR=/var/www/nextcloud/
+NCDIR=/var/www/html/nextcloud/
 NCPWB=/var/www/ncp-web/
 
 install()
@@ -40,8 +40,8 @@ EOF
 EOF
 }
 
-configure() 
-{ 
+configure()
+{
   cat > /etc/modsecurity/modsecurity_crs_99_whitelist.conf <<EOF
 <Directory $NCDIR>
   # VIDEOS
@@ -112,4 +112,3 @@ EOF
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

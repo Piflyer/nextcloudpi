@@ -4,7 +4,7 @@
 
 ## redis provisioning
 
-CFG=/var/www/nextcloud/config/config.php
+CFG=/var/www/html/nextcloud/config/config.php
 REDISPASS="$( grep "^requirepass" /etc/redis/redis.conf | cut -f2 -d' ' )"
 
 ### IF redis password is the default one, generate a new one
@@ -54,7 +54,7 @@ source /usr/local/etc/library.sh
 run_app nc-limits
 
 ## Check for interrupted upgrades and rollback
-BKP="$( ls -1t /var/www/nextcloud-bkp_*.tar.gz 2>/dev/null | head -1 )"
+BKP="$( ls -1t /var/www/html/nextcloud-bkp_*.tar.gz 2>/dev/null | head -1 )"
 [[ -f "$BKP" ]] && [[ "$( stat -c %U "$BKP" )" == "root" ]] && [[ "$( stat -c %a "$BKP" )" == 600 ]] && {
   echo "Detected interrupted upgrade. Restoring..."
   BKP_NEW="failed_$BKP"

@@ -8,7 +8,7 @@
 # More at https://ownyourbits.com/2017/03/17/lets-encrypt-installer-for-apache/
 
 
-ncdir=/var/www/nextcloud
+ncdir=/var/www/html/nextcloud
 vhostcfg=/etc/apache2/sites-available/nextcloud.conf
 vhostcfg2=/etc/apache2/sites-available/ncp.conf
 letsencrypt=/usr/bin/letsencrypt
@@ -152,4 +152,3 @@ cleanup()
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

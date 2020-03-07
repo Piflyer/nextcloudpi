@@ -26,8 +26,8 @@ VER="$1"
 [[ -f /.docker-image ]] && BASEDIR=/data || BASEDIR=/var/www
 cd "$BASEDIR"
 DATADIR="$( grep datadirectory nextcloud/config/config.php | awk '{ print $3 }' | grep -oP "[^']*[^']" | head -1 )"
-[[ -d /var/www/nextcloud-old ]] && { echo "Nextcloud backup directory found. Interrupted installation?"; exit 1; }
-[[ -d /var/www/nextcloud     ]] || { echo "Nextcloud directory not found"                              ; exit 1; }
+[[ -d /var/www/html/nextcloud-old ]] && { echo "Nextcloud backup directory found. Interrupted installation?"; exit 1; }
+[[ -d /var/www/html/nextcloud     ]] || { echo "Nextcloud directory not found"                              ; exit 1; }
 [[ -d "$DATADIR"             ]] || { echo "Nextcloud data directory not found"                         ; exit 1; }
 [[ "$(stat -fc%T "$BASEDIR")" == "btrfs" ]] && { echo "BTRFS not supported"                            ; exit 1; }
 
@@ -35,7 +35,7 @@ DATADIR="$( grep datadirectory nextcloud/config/config.php | awk '{ print $3 }' 
 ####################
 
 [[ ${EUID} -eq 0 ]] && SUDO="sudo -u www-data"
-CURRENT="$( $SUDO php /var/www/nextcloud/occ status | grep "version:" | awk '{ print $3 }' )"
+CURRENT="$( $SUDO php /var/www/html/nextcloud/occ status | grep "version:" | awk '{ print $3 }' )"
 
 grep -qP "\d+\.\d+\.\d+" <<<"$CURRENT" || { echo "Malformed version $CURRENT"; exit 1; }
 grep -qP "\d+\.\d+\.\d+" <<<"$VER"     || { echo "Malformed version $VER"    ; exit 1; }
@@ -56,7 +56,7 @@ elif [ "$MAJOR" -eq "$MAJ" ] && [ "$MINOR" -gt "$MIN" ]; then
 elif [ "$MAJOR" -eq "$MAJ" ] && [ "$MINOR" -eq "$MIN" ] && [ "$PATCH" -gt "$PAT" ]; then
   NEED_UPDATE=true
 fi
- 
+
 echo "Current   Nextcloud version $CURRENT"
 echo "Available Nextcloud version $VER"
 [[ "$NEED_UPDATE" == "true" ]] || { echo "Nothing to update"; exit 1; }
@@ -77,7 +77,7 @@ cleanup() {
   trap "" EXIT
   exit $RET
 }
-trap cleanup EXIT 
+trap cleanup EXIT
 
 # get new code
 ####################
@@ -122,7 +122,7 @@ trap rollback_simple INT TERM HUP ERR
 echo "Install Nextcloud $VER..."
 mv -T nextcloud nextcloud-old
 tar -xf nextcloud.tar.bz2             # && false # test point
-rm -rf /var/www/nextcloud.tar.bz2
+rm -rf /var/www/html/nextcloud.tar.bz2
 
 # copy old config
 ####################
@@ -146,7 +146,7 @@ done
 
 # copy data if it was at the default location
 ####################
-if [[ "$DATADIR" == "/var/www/nextcloud/data" ]] || [[ "$DATADIR" == "/data/nextcloud/data" ]]; then
+if [[ "$DATADIR" == "/var/www/html/nextcloud/data" ]] || [[ "$DATADIR" == "/data/nextcloud/data" ]]; then
   echo "Restore data..."
   mv -T nextcloud-old/data nextcloud/data
 fi
@@ -157,7 +157,7 @@ rollback() {
   set +eE
   trap "" INT TERM HUP ERR EXIT
   echo -e "Abort\nClean up..."
-  rm -rf /var/www/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
+  rm -rf /var/www/html/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
   echo "Rolling back to backup $BKP..."
   local TMPDATA="$( mktemp -d "/var/www/ncp-data.XXXXXX" )" || { echo "Failed to create temp dir" >&2; exit 1; }
   [[ "$DATADIR" == "$BASEDIR/nextcloud/data" ]] && mv -T "$DATADIR" "$TMPDATA"
@@ -179,7 +179,7 @@ find nextcloud/ -type f -exec chmod 640 {} \;
 # upgrade
 ####################
 echo "Upgrade..."
-sudo -u www-data php nextcloud/occ upgrade      # && false # test point 
+sudo -u www-data php nextcloud/occ upgrade      # && false # test point
 sudo -u www-data php nextcloud/occ db:add-missing-indices
 
 # done

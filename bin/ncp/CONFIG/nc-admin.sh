@@ -17,7 +17,7 @@ configure()
   [[ "$PASSWORD" == "$CONFIRM" ]] || { echo "passwords do not match"; return 1; }
 
   OC_PASS="$PASSWORD" \
-    sudo -E -u www-data php /var/www/nextcloud/occ \
+    sudo -E -u www-data php /var/www/html/nextcloud/occ \
     user:resetpassword --password-from-env "$USER"
 }
 

@@ -84,9 +84,9 @@ configure()
 {
   ## IF BETA SELECTED ADD "pre" to DOWNLOAD PATH
   [[ "$BETA" == yes ]] && local PREFIX="pre"
-    
+
   ## DOWNLOAD AND (OVER)WRITE NEXTCLOUD
-  cd /var/www/
+  cd /var/www/html/
 
   local URL="https://download.nextcloud.com/server/${PREFIX}releases/nextcloud-$VER.tar.bz2"
   echo "Downloading Nextcloud $VER..."
@@ -101,7 +101,7 @@ configure()
   rm nextcloud.tar.bz2
 
   ## CONFIGURE FILE PERMISSIONS
-  local ocpath='/var/www/nextcloud'
+  local ocpath='/var/www/html/nextcloud'
   local htuser='www-data'
   local htgroup='www-data'
   local rootuser='root'
@@ -136,7 +136,7 @@ configure()
   fi
 
   # create and configure opcache dir
-  local OPCACHEDIR=/var/www/nextcloud/data/.opcache
+  local OPCACHEDIR=/var/www/html/nextcloud/data/.opcache
   sed -i "s|^opcache.file_cache=.*|opcache.file_cache=$OPCACHEDIR|" /etc/php/${PHPVER}/mods-available/opcache.ini
   mkdir -p $OPCACHEDIR
   chown -R www-data:www-data $OPCACHEDIR
@@ -172,43 +172,6 @@ GRANT ALL PRIVILEGES ON nextcloud.* TO $DBADMIN@localhost;
 EXIT
 EOF
 
-## SET APACHE VHOST
-  echo "Setting up Apache..."
-  cat > /etc/apache2/sites-available/nextcloud.conf <<'EOF'
-<IfModule mod_ssl.c>
-  <VirtualHost _default_:443>
-    DocumentRoot /var/www/nextcloud
-    CustomLog /var/log/apache2/nc-access.log combined
-    ErrorLog  /var/log/apache2/nc-error.log
-    SSLEngine on
-    SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
-    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
-  </VirtualHost>
-  <Directory /var/www/nextcloud/>
-    Options +FollowSymlinks
-    AllowOverride All
-    <IfModule mod_dav.c>
-      Dav off
-    </IfModule>
-    LimitRequestBody 0
-    SSLRenegBufferSize 10486000
-  </Directory>
-</IfModule>
-EOF
-  a2ensite nextcloud
-
-  cat > /etc/apache2/sites-available/000-default.conf <<'EOF'
-<VirtualHost _default_:80>
-  DocumentRoot /var/www/nextcloud
-  <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{HTTPS} !=on
-    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
-  </IfModule>
-</VirtualHost>
-EOF
-
-  # some added security
   sed -i 's|^ServerSignature .*|ServerSignature Off|' /etc/apache2/conf-enabled/security.conf
   sed -i 's|^ServerTokens .*|ServerTokens Prod|'      /etc/apache2/conf-enabled/security.conf
 
@@ -234,7 +197,7 @@ max_input_time=$MAXTRANSFERTIME
 EOF
 
   ## SET CRON
-  echo "*/15  *  *  *  * php -f /var/www/nextcloud/cron.php" > /tmp/crontab_http
+  echo "*/15  *  *  *  * php -f /var/www/html/nextcloud/cron.php" > /tmp/crontab_http
   crontab -u www-data /tmp/crontab_http
   rm /tmp/crontab_http
 
@@ -257,4 +220,3 @@ EOF
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

@@ -12,7 +12,7 @@
 
 # check every hour
 CHECKINTERVAL=1
-NCDIR=/var/www/nextcloud
+NCDIR=/var/www/html/nextcloud
 
 configure()
 {
@@ -108,4 +108,3 @@ install() { :; }
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

@@ -9,11 +9,11 @@ source /usr/local/etc/library.sh # sets NCVER PHPVER RELEASE
 # all images
 
 # replace preview generator for the NCP version
-[[ -d /var/www/nextcloud/apps/previewgenerator ]] && {
-  grep -q NCP /var/www/nextcloud/apps/previewgenerator &>/dev/null || {
-    cp -raT /var/www/nextcloud/apps/{previewgenerator,previewgenerator.orig}
-    cp -r /var/www/ncp-previewgenerator /var/www/nextcloud/apps/previewgenerator
-    chown -R www-data: /var/www/nextcloud/apps/previewgenerator
+[[ -d /var/www/html/nextcloud/apps/previewgenerator ]] && {
+  grep -q NCP /var/www/html/nextcloud/apps/previewgenerator &>/dev/null || {
+    cp -raT /var/www/html/nextcloud/apps/{previewgenerator,previewgenerator.orig}
+    cp -r /var/www/ncp-previewgenerator /var/www/html/nextcloud/apps/previewgenerator
+    chown -R www-data: /var/www/html/nextcloud/apps/previewgenerator
     is_active_app nc-previews-auto && run_app nc-previews-auto
   }
 }
@@ -23,7 +23,7 @@ is_active_app nc-scan-auto && run_app nc-scan-auto
 
 # if using NCP original logo, replace with the new version
 datadir=$(ncc config:system:get datadirectory)
-id=$(grep instanceid /var/www/nextcloud/config/config.php | awk -F "=> " '{ print $2 }' | sed "s|[,']||g")
+id=$(grep instanceid /var/www/html/nextcloud/config/config.php | awk -F "=> " '{ print $2 }' | sed "s|[,']||g")
 logo_dir="${datadir}/appdata_${id}/theming/images"
 [[ -f "${logo_dir}"/logo ]] && {
   sum_orig=ca39ff587bd899cb92eb0f5a6d429824

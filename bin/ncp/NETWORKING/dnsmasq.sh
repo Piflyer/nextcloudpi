@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# dnsmasq DNS server with cache installation on Raspbian 
+# dnsmasq DNS server with cache installation on Raspbian
 #
 # Copyleft 2017 by Ignacio Nunez Hernanz <nacho _a_t_ ownyourbits _d_o_t_ com>
 # GPL licensed (see end of file) * Use at your own risk!
@@ -41,7 +41,7 @@ EOF
 
 configure()
 {
-  [[ $ACTIVE != "yes" ]] && { 
+  [[ $ACTIVE != "yes" ]] && {
     service dnsmasq stop
     update-rc.d dnsmasq disable
     echo "dnmasq disabled"
@@ -49,18 +49,18 @@ configure()
   }
 
   local IFACE=$( ip r | grep "default via"   | awk '{ print $5 }' | head -1 )
-  local IP=$( sudo -u www-data php /var/www/nextcloud/occ config:system:get trusted_domains 6 | grep -oP '\d{1,3}(.\d{1,3}){3}' )
+  local IP=$( sudo -u www-data php /var/www/html/nextcloud/occ config:system:get trusted_domains 6 | grep -oP '\d{1,3}(.\d{1,3}){3}' )
   [[ "$IP" == "" ]] && IP=$( ip a show dev "$IFACE" | grep global | grep -oP '\d{1,3}(.\d{1,3}){3}' | head -1 )
 
   [[ "$IP" == "" ]] && { echo "could not detect IP"; return 1; }
-  
+
   cat > /etc/dnsmasq.conf <<EOF
 interface=$IFACE
 domain-needed         # Never forward plain names (without a dot or domain part)
 bogus-priv            # Never forward addresses in the non-routed address spaces.
 no-poll               # Don't poll for changes in /etc/resolv.conf
 no-resolv             # Don't use /etc/resolv.conf or any other file
-cache-size=$CACHESIZE 
+cache-size=$CACHESIZE
 server=$DNSSERVER
 address=/$DOMAIN/$IP  # This is optional if we add it to /etc/hosts
 EOF
@@ -73,7 +73,7 @@ EOF
   update-rc.d dnsmasq defaults
   update-rc.d dnsmasq enable
   service dnsmasq restart
-  cd /var/www/nextcloud
+  cd /var/www/html/nextcloud
   sudo -u www-data php occ config:system:set trusted_domains 2 --value=$DOMAIN
   sudo -u www-data php occ config:system:set overwrite.cli.url --value=https://"$DOMAIN"/
   echo "dnsmasq enabled"
@@ -95,4 +95,3 @@ EOF
 # along with this script; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 # Boston, MA  02111-1307  USA
-

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FreeDNS updater client installation on Raspbian 
+# FreeDNS updater client installation on Raspbian
 #
 # Copyleft 2017 by Panteleimon Sarantos <pantelis.fedora _a_t_ gmail _d_o_t_ com>
 # GPL licensed (see end of file) * Use at your own risk!
@@ -13,12 +13,12 @@ install()
   apt-get install --no-install-recommends -y dnsutils
 }
 
-configure() 
+configure()
 {
   local updateurl=https://freedns.afraid.org/dynamic/update.php
   local url="${updateurl}?${UPDATEHASH}"
 
-  [[ $ACTIVE != "yes" ]] && { 
+  [[ $ACTIVE != "yes" ]] && {
     rm -f /etc/cron.d/freeDNS
     service cron restart
     echo "FreeDNS client is disabled"
@@ -42,7 +42,7 @@ EOF
   chmod 644 /etc/cron.d/freeDNS
   service cron restart
 
-  cd /var/www/nextcloud
+  cd /var/www/html/nextcloud
   sudo -u www-data php occ config:system:set trusted_domains 3 --value="$DOMAIN"
   sudo -u www-data php occ config:system:set overwrite.cli.url --value=https://"$DOMAIN"/
 
